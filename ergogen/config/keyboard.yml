@@ -1,0 +1,227 @@
+meta:
+  engine: 4.1.0
+
+# Redefine the base units for Choc spacing
+units:
+  cx: 18
+  cy: 17
+
+points:
+  key:
+    padding: cy
+    spread: cx
+
+  mirror:
+    ref: main_inner_home  # The pivot point for the mirror
+    distance: 150          # The gap in mm between the left and right halves
+
+  zones:
+    main:
+      columns:
+        outer:
+        pinky:
+        ring:
+          key.stagger: 8
+        middle:
+          key.stagger: 4
+        index:
+          key.stagger: -6
+        inner:
+          key.stagger: -2
+          rows:
+            mods_row:
+              adjust:
+                rotate: -10
+                shift: [2, -4]
+                
+        mods_col:
+          rows:
+            mods_row:
+              height: 27
+              adjust:
+                rotate: -110
+                shift: [3, -9]
+      rows:
+        mods_row:
+        bottom:
+        home:
+        top:
+        number:
+
+    thumb:
+      anchor:
+        ref: main_mods_col_mods_row
+        # Shift places the bottom-left origin of the thumb cluster.
+        shift: [19, 0] 
+      columns:
+        t1:
+          rows:
+            lower:
+              height: 27
+          
+      rows: 
+        lower:
+          shift: [-19, 18]
+        upper:
+          shift: [-23, -17]
+          rotate: 90
+
+outlines:
+  raw:
+    # 1. Draw standard 1u footprints everywhere
+    - what: rectangle
+      where: true
+      size: [cx, cy]
+      
+    # 2. Erase the 1u footprint from the 1.5u keys
+    - what: rectangle
+      where: /thumb_t1_lower|main_mods_col_mods_row/
+      size: [cx, cy]
+      operation: subtract 
+      
+    # 3. Draw the full 1.5u footprints in those spots
+    - what: rectangle
+      where: /thumb_t1_lower|main_mods_col_mods_row/
+      size: [27, cy] 
+      operation: stack 
+
+  board:
+    - what: outline
+      name: raw
+      expand: 5
+      fillet: 2
+
+  keycaps:
+    # 1u
+    - what: rectangle
+      where: true
+      # MBK Choc keycaps are typically 17.5mm wide by 16.5mm tall
+      size: [17.5, 16.5]
+      corner: 1
+
+    # 2. Erase the 1u from the tall keys
+    - what: rectangle
+      where: /thumb_t1_lower|main_mods_col_mods_row/
+      size: [17.5, 16.5]
+      corner: 1
+      operation: subtract 
+    
+    # 1.5u
+    - what: rectangle
+      where: /thumb_t1_lower|main_mods_col_mods_row/
+      size: [26.5, 16.5]
+      corner: 1
+      operation: stack 
+
+pcbs:
+  main:
+    template: kicad8 
+    outlines:
+      main:
+        outline: board
+    footprints:
+      switches:
+        what: ceoloide/switch_choc_v1_v2
+        where: true
+        params:
+          reversible: true
+          from: "{{column.net}}" 
+          to: "{{row.net}}"      
+
+      rrgb_leds:
+        what: ceoloide/led_sk6812mini-e
+        where: true
+        params:
+          side: B
+          P1: "EXT_VCC"  
+          P2: "DIN"      
+          P3: "GND"      
+          P4: "DOUT"     
+          
+      mcu:
+        what: ceoloide/mcu_nice_nano
+        where: 
+          ref: main_inner_bottom 
+          shift: [10, 2]
+          rotate: -90
+        params:
+          side: B
+      
+      battery_reference:
+        what: ceoloide/utility_text
+        where: 
+          ref: main_middle_home
+        params:
+          text: "BATTERY: 61x56mm"
+          side: B
+
+      # --- Battery JST Connector ---
+      battery_connector:
+        what: ceoloide/battery_connector_jst_ph_2
+        where: 
+          ref: main_inner_top
+          shift: [20, -15] 
+          rotate: -90
+        params:
+          side: B
+      
+      # --- Battery Indicator LEDs ---
+      bat_led_5:
+        what: ceoloide/led_sk6812mini-e
+        where:
+          ref: main_inner_number
+          shift: [18, 0]
+        params:
+          side: F
+          P1: "EXT_VCC"
+          P2: "DIN"
+          P3: "GND"
+          P4: "DOUT"
+
+      bat_led_4:
+        what: ceoloide/led_sk6812mini-e
+        where:
+          ref: main_inner_top
+          shift: [18, 0]
+        params:
+          side: F
+          P1: "EXT_VCC"
+          P2: "DIN"
+          P3: "GND"
+          P4: "DOUT"
+
+      bat_led_3:
+        what: ceoloide/led_sk6812mini-e
+        where:
+          ref: main_inner_home
+          shift: [18, 0]
+        params:
+          side: F
+          P1: "EXT_VCC"
+          P2: "DIN"
+          P3: "GND"
+          P4: "DOUT"
+
+      bat_led_2:
+        what: ceoloide/led_sk6812mini-e
+        where:
+          ref: main_inner_bottom
+          shift: [18, 0]
+        params:
+          side: F
+          P1: "EXT_VCC"
+          P2: "DIN"
+          P3: "GND"
+          P4: "DOUT"
+
+      bat_led_1:
+        what: ceoloide/led_sk6812mini-e
+        where:
+          ref: main_inner_mods_row
+          shift: [18, 0]
+        params:
+          side: F
+          P1: "EXT_VCC"
+          P2: "DIN"
+          P3: "GND"
+          P4: "DOUT"
