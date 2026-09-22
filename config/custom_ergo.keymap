@@ -20,10 +20,10 @@
             // |   *  |  *  |  *  |  *  | COM |  1  | SPC | DEL |    | BSPC | SPC |  2  | COM  | PLY | LFT | DWN | RGT  |
 
             bindings = <
-&kp ESC       &kp N1     &kp N2  &kp N3        &kp N4          &kp N5     &kp N8                         &kp N9   &kp N0         &kp BSPC  &kp    &kp Q           &kp TAB    &kp BACKSPACE
-&kp TAB       &kp R      &kp T   &kp Y         &kp O           &kp P      &kp DEL                        &kp TAB  &kp A          &kp S     &kp D  &kp LEFT_SHIFT  &kp A      &kp DEL
-&kp D         &kp F      &kp G   &kp BSLH      &kp LEFT_SHIFT  &kp Z      &kp X                          &kp C    &kp V          &kp B     &kp N  &kp M           &kp COMMA  &kp DOT
-&kp UP_ARROW  &kp LSHFT  &kp     &kp LEFT_GUI  &mo 1           &kp SPACE  &kp      &kp SPACE  &kp SPACE  &kp C    &kp V          &kp B     &kp N  &kp M           &kp COMMA  &kp DOT
+&kp ESC       &kp N1     &kp N2  &kp N3        &kp N4          &kp N5                             &kp N9   &kp N0         &kp BSPC  &kp    &kp Q           &kp TAB    &kp BACKSPACE
+&kp TAB       &kp R      &kp T   &kp Y         &kp O           &kp P                              &kp TAB  &kp A          &kp S     &kp D  &kp LEFT_SHIFT  &kp A      &kp DEL
+&kp D         &kp F      &kp G   &kp BSLH      &kp LEFT_SHIFT  &kp Z                              &kp C    &kp V          &kp B     &kp N  &kp M           &kp COMMA  &kp DOT
+&kp UP_ARROW  &kp LSHFT  &kp     &kp LEFT_GUI  &mo 1           &kp SPACE  &kp SPACE  &kp SPACE  &kp C    &kp V          &kp B     &kp N  &kp M           &kp COMMA  &kp DOT
             >;
         };
 
